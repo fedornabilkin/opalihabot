@@ -74,7 +74,7 @@ class UserModel extends AbstractModel
      */
     public function getQvChatIds()
     {
-        $users = $this->getUsersByRole(D::ROLE_QV);
+        $users = $this->getUsersByRole(D::ROLE_MODERATOR);
         return array_column($users, 'chatid');
     }
 

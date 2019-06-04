@@ -161,57 +161,9 @@ abstract class AbstractHandler
         return $method ?? new SendMessage();
     }
 
-    /**
-     * @param string $buttonText
-     * @return string
-     */
-    public function getPastFactContent($buttonText)
+    public function getHelp()
     {
-        switch ($buttonText) {
-
-            case D::BTN_PAST_FACT_RB:
-            case D::BTN_PAST_FACT_MAILING_RB:
-                $pastFactFilePath = PAST_FACT_FILE_PATH_RB;
-                break;
-
-            case D::BTN_PAST_FACT_LV:
-            case D::BTN_PAST_FACT_MAILING_LV:
-                $pastFactFilePath = PAST_FACT_FILE_PATH_LV;
-                break;
-
-            case D::BTN_PAST_FACT_RB_PFM:
-                $pastFactFilePath = PAST_FACT_FILE_PATH_RB_PFM;
-                break;
-
-            case D::BTN_PAST_FACT_MAILING:
-                $pastFactFilePath = PAST_FACT_FILE_PATH;
-                break;
-
-            default:
-                $pastFactFilePath = PAST_FACT_FILE_PATH;
-        }
-
-        $text = 'File not found ' . $pastFactFilePath;
-        if (file_exists($pastFactFilePath)) {
-            $text = file_get_contents($pastFactFilePath);
-        }
-
-        // Ищем строки вида:
-        // Отчёт по выручке за 25 дек 2018:<br>
-        if ($pastFactFilePath === PAST_FACT_FILE_PATH_RB_PFM) {
-            preg_match_all('/<br><br>\r\n([а-яА-Я0-9:\s\r\nё<br><BR>]{0,})<br><br>/imu', $text, $m);
-            return str_replace(['<BR>', '<br>'], "\n", $m[1][0]);
-        } else {
-            preg_match_all('#\n([^<\n]+)<br>#', $text, $m);
-            return implode("\n", $m[1]);
-        }
-
-    }
-
-    public function sendPastFactContent()
-    {
-        $text = $this->getPastFactContent($this->message->text);
-        $m[] = $this->setMethodMessage($text, $this->message->chat->id);
+        $m[] = $this->setMethodMessage("Сообщение с текстом помощи\n /help \n /info", $this->message->chat->id);
         $this->pushMethod($m);
     }
 
@@ -238,41 +190,6 @@ abstract class AbstractHandler
         $request->on("error", function ($e) {
         });
         $request->end();
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getRevenueNew()
-    {
-//        $client = new \React\HttpClient\Client($this->loop);
-//        $this->pushMethod($this->setMethodAction());
-//
-//        $data = json_encode(['url' => "http://10.5.0.3/qv"]);
-//
-//        $request = $client->request('POST', "http://10.5.0.79:8189", [
-//            'Content-Type' => 'application/json',
-//            'Content-Length' => strlen($data)
-//        ]);
-//
-//        file_put_contents("/code/img.jpg", "");
-//
-//        $request->on('response', function(\React\HttpClient\Response $response) {
-//            $path = '/code/img.jpg';
-//
-//            $response->on('data', function($d) use ($path) {
-//                echo "nyk";
-//                file_put_contents($path, $d, FILE_APPEND);
-//            });
-//
-//            $response->on('end', function() use ($path) {
-//                echo "nykend";
-//                $this->pushMethod($this->setMethodPhoto($path));
-//            });
-//        });
-//
-//        $request->on("error", function($e) {});
-//        $request->end($data);
     }
 
     /**

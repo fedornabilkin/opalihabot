@@ -95,7 +95,10 @@ abstract class AbstractCommands
     {
         return [
             D::REQ_TYPE_CALLBACK => $this->getCommandsCallback(),
-            D::REQ_TYPE_COMMAND => $this->getCommandsCmd(),
+            D::REQ_TYPE_COMMAND => array_merge(
+                [D::CMD_HELP => [$this->getHandler(), 'getHelp']],
+                $this->getCommandsCmd()
+            ),
             D::REQ_TYPE_TEXT => $this->getCommandsText()
         ];
     }

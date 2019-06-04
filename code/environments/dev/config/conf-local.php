@@ -1,7 +1,7 @@
 <?php
 
 define('ENV', 'DEV'); // DEV, TEST, PROD
-define('BOT_TOKEN', '836797504:AAGMHcaq2QNlugrhEyxEVxcThkAiyOIvjzQ');
+define('BOT_TOKEN', '');
 define('HOST_IP', '10.0.2.15');
 
 // proxy settings

@@ -7,7 +7,7 @@ namespace Fp\Telebot\middleware;
 use Fp\Telebot\commands\AdminCommands;
 use Fp\Telebot\commands\CronCommands;
 use Fp\Telebot\commands\GuestCommands;
-use Fp\Telebot\commands\QvCommands;
+use Fp\Telebot\commands\ModeratorCommands;
 use Fp\Telebot\Dictionary as D;
 
 class CommandsCheckMiddleware extends AbstractMiddleware
@@ -32,8 +32,8 @@ class CommandsCheckMiddleware extends AbstractMiddleware
         $commands = null;
 
         switch ($roleId) {
-            case D::ROLE_QV:
-                $commands = new QvCommands();
+            case D::ROLE_MODERATOR:
+                $commands = new ModeratorCommands();
                 break;
             case D::ROLE_ADMIN:
                 $commands = new AdminCommands();

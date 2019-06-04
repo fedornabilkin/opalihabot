@@ -46,18 +46,7 @@ class AdminCommands extends AbstractCommands
     {
         return [
             D::BTN_ADMIN_PANEL => [$this->getHandler(), 'initAdminButtons'],
-            D::BTN_SALES_PANEL => [$this->getHandler(), 'initQvButtons'],
             D::BTN_USER_LIST => [$this->getHandler(), 'initUserListPanel'],
-
-            D::BTN_PAST_FACT => [$this->getHandler(), 'sendPastFactContent'],
-            D::BTN_PAST_FACT_RB => [$this->getHandler(), 'sendPastFactContent'],
-            D::BTN_PAST_FACT_LV => [$this->getHandler(), 'sendPastFactContent'],
-
-            D::BTN_PAST_FACT_MAILING => [$this->getHandler(), 'sendToNotGuest'],
-            D::BTN_PAST_FACT_MAILING_RB => [$this->getHandler(), 'sendToNotGuest'],
-            D::BTN_PAST_FACT_MAILING_LV => [$this->getHandler(), 'sendToNotGuest'],
-
-            D::BTN_SALES_ONLINE => [$this->getHandler(), 'getRevenue'],
         ];
     }
 

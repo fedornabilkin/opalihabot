@@ -1,14 +1,32 @@
 Развертывание проекта
 ---
 
+* Создаем файл .env
+```
+# DB
+pg_db_name=telebot
+pg_db_user=root
+pg_db_password=password
+
+# Hosts
+host_telegram_api=api.telegram.org:149.154.167.220
+
+# Ports host
+port_host_wkhtml=8089
+port_host_app=8092
+
+# Ports service
+port_service_web=8090
+port_service_db=5442
+```
+
 * В файле `docker/dockerfile-composer` комментируем/раскомментируем, чтобы было так
 ```
-ENTRYPOINT /bin/bash
+ENTRYPOINT composer install --no-interaction && /bin/bash
 #ENTRYPOINT php /code/run.php
 ```
-* Собираем образы `docker-compose -f docker-compose.dev.yml build`
-* Запускаем контейнеры `docker-compose -f docker-compose.dev.yml up -d`
-* Заходим в контейнер `docker-compose exec app bash` и выполняем `composer install`
+* Собираем образы `docker-compose build`
+* Запускаем контейнеры `docker-compose up -d`
 
 Запуск проекта
 ---
@@ -18,9 +36,9 @@ ENTRYPOINT /bin/bash
 (можно не заходить в контейнер, в файле `conf-local.php` изменяем настройки)
 * В файле `docker/dockerfile-composer` комментируем/раскомментируем, чтобы было так
 ```
-#ENTRYPOINT /bin/bash
+#ENTRYPOINT composer install --no-interaction && /bin/bash
 ENTRYPOINT php /code/run.php
 ```
-* Пересобираем образ `docker-compose -f docker-compose.dev.yml build app`
-* Запускаем контейнер `docker-compose -f docker-compose.dev.yml up -d --force-recreate app`
+* Пересобираем образ `docker-compose build app`
+* Запускаем контейнер `docker-compose up -d --force-recreate app`
 

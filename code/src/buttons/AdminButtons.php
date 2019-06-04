@@ -19,11 +19,7 @@ class AdminButtons extends AbstractButtons
     public function create()
     {
         $buttons = [
-            D::BTN_SALES_PANEL,
             D::BTN_USER_LIST,
-            D::BTN_PAST_FACT_MAILING,
-            D::BTN_PAST_FACT_MAILING_RB,
-            D::BTN_PAST_FACT_MAILING_LV
         ];
 
         $this->addButtons($buttons);

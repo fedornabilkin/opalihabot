@@ -39,7 +39,7 @@ class AssignRolePanel extends AbstractPanel
 
         $this->addInlineButton(D::BTN_INLINE_ROLE_ADMIN, 1, $this->callbackPrepare($callback));
 
-        $callback['roleId'] = D::ROLE_QV;
+        $callback['roleId'] = D::ROLE_MODERATOR;
         $this->addInlineButton(D::BTN_INLINE_ROLE_SALE, 1, $this->callbackPrepare($callback));
 
         $callback['roleId'] = D::ROLE_NO_AUTH;

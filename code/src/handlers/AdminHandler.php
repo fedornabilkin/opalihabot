@@ -66,16 +66,6 @@ class AdminHandler extends AbstractHandler
     }
 
     /**
-     * ФОрмирует быстрые кнопки для продаж
-     */
-    public function initQvButtons()
-    {
-        $buttons = new SaleButtons();
-        $buttons->setIsAdmin(true);
-        $this->pushMethod($buttons->getSendMessage());
-    }
-
-    /**
      * Устанавливает роль пользователю и отправляет результат выполнения
      */
     public function processAssignRole()
@@ -93,19 +83,6 @@ class AdminHandler extends AbstractHandler
             $this->pushMethod($m);
         }
 
-    }
-
-    /**
-     * @return void
-     */
-    public function sendToNotGuest()
-    {
-        $userModel = new UserModel();
-        $chatIds = array_merge($userModel->getAdminsChatIds(), $userModel->getQvChatIds());
-        $text = $this->getPastFactContent($this->message->text);
-
-        $m = $this->setMethodMultipleChats($text, $chatIds);
-        $this->pushMethod($m);
     }
 
     /**
