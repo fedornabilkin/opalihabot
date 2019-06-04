@@ -1,0 +1,13 @@
+.idea
+vendor
+nbproject
+*.lock
+
+db
+.env
+
+code/config/conf.php
+code/config/conf-local.php
+code/img.jpg
+
+wkhtml/revenue.jpg

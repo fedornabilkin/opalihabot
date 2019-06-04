@@ -1,0 +1,18 @@
+FROM openlabs/docker-wkhtmltopdf-aas
+
+COPY ./docker/ttf.sh ./ttf.sh
+
+RUN  sh ./ttf.sh
+
+RUN apt-get update
+
+RUN echo ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula \
+select true | debconf-set-selections
+
+RUN apt-get install -y ttf-mscorefonts-installer
+
+WORKDIR /project/wkhtml
+
+ENTRYPOINT ["/usr/local/bin/gunicorn"]
+
+CMD ["-b", "0.0.0.0:8089", "--log-file", "-", "app:application"]

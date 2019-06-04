@@ -1,0 +1,3 @@
+10 10 * * * php /filechecker/run.php admin
+50 10 * * * php /filechecker/run.php user
+50 10 * * * php /filechecker/run.php detailed

@@ -1,0 +1,9 @@
+{
+	"require": {
+		"tsufeki/react-filesystem-monitor":"0.2.0",
+                "react/http-client":"^0.4.6"
+	},
+	"autoload": {
+		"psr-4": {"Fp\\Filechecker\\": "src/"}
+	}
+}

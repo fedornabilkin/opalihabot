@@ -1,0 +1,12 @@
+FROM composer:latest
+
+RUN apk update && apk add postgresql postgresql-dev
+
+RUN docker-php-ext-install pdo_pgsql
+
+
+WORKDIR /code
+
+#ENTRYPOINT composer install --no-interaction && /bin/bash
+ENTRYPOINT php /code/run.php
+CMD ["true"]

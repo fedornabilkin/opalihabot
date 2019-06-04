@@ -1,0 +1,18 @@
+FROM composer:latest
+
+RUN apk update
+
+RUN apk add inotify-tools tzdata
+
+#RUN unlink /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+
+WORKDIR /filechecker
+
+COPY ./filechecker/composer.json ./
+
+ENTRYPOINT crond && cat crontab >> /var/spool/cron/crontabs/root \
+    && composer update --no-interaction \
+    && composer install --no-interaction \
+    && /bin/bash
+
+CMD ["true"]

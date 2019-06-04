@@ -1,0 +1,79 @@
+version: '2'
+
+services:
+  web:
+    image: nginx:latest
+    network_mode: bridge
+    ports:
+      - ${port_service_web}:80
+    volumes:
+      - ./docker/nginx/site.conf:/etc/nginx/conf.d/site.conf
+    volumes_from:
+      - app
+    links:
+      - php
+
+  app:
+    build:
+      context: ./
+      dockerfile: docker/dockerfile-composer
+    network_mode: bridge
+    ports:
+      - ${port_host_app}:8082
+    extra_hosts:
+      - ${host_telegram_api}
+    volumes:
+      - ./code:/code
+      - ./filechecker:/filechecker
+     # - /var/update:/update
+    #        depends_on: [db]
+    tty: true
+
+  filechecker:
+    build:
+      context: ./
+      dockerfile: docker/dockerfile-filechecker
+    network_mode: bridge
+    volumes:
+      - ./filechecker:/filechecker
+    #  - /var/update:/update
+    tty: true
+    environment:
+      - "TZ=Europe/Moscow"
+    links:
+      - app
+
+  wkhtml:
+    build:
+      context: ./
+      dockerfile: docker/dockerfile-wkhtml
+    network_mode: bridge
+    ports:
+      - ${port_host_wkhtml}:8089
+    volumes:
+      - ./wkhtml:/project/wkhtml
+    tty: true
+
+  php:
+    build:
+      context: ./
+      dockerfile: docker/dockerfile-php-7-fpm
+    network_mode: bridge
+    depends_on: [app]
+    volumes_from:
+      - app
+
+  db:
+    image: postgres
+    network_mode: bridge
+    restart: always
+    ports:
+      - ${port_service_db}:5432
+    volumes:
+      - ./db:/data/postgres
+      - ./docker/database/initdb.sql:/docker-entrypoint-initdb.d/initdb.sql
+    environment:
+      - PGDATA=/data/postgres
+      - POSTGRES_DB=${pg_db_name}
+      - POSTGRES_USER=${pg_db_user}
+      - POSTGRES_PASSWORD=${pg_db_password}
