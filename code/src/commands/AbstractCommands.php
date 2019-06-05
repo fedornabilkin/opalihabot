@@ -93,12 +93,13 @@ abstract class AbstractCommands
      */
     protected function getCommands()
     {
+        $help = [
+            D::CMD_HELP => [$this->getHandler(), 'getHelp'],
+            '?' => [$this->getHandler(), 'getHelp'],
+        ];
         return [
             D::REQ_TYPE_CALLBACK => $this->getCommandsCallback(),
-            D::REQ_TYPE_COMMAND => array_merge(
-                [D::CMD_HELP => [$this->getHandler(), 'getHelp']],
-                $this->getCommandsCmd()
-            ),
+            D::REQ_TYPE_COMMAND => array_merge($help, $this->getCommandsCmd()),
             D::REQ_TYPE_TEXT => $this->getCommandsText()
         ];
     }

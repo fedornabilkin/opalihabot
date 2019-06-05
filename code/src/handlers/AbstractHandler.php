@@ -161,9 +161,13 @@ abstract class AbstractHandler
         return $method ?? new SendMessage();
     }
 
+    /**
+     * Сообщение с помощью по управлению ботов
+     */
     public function getHelp()
     {
-        $m[] = $this->setMethodMessage("Сообщение с текстом помощи\n /help \n /info", $this->message->chat->id);
+        $text = "Сообщение с текстом помощи\n /help \n /info";
+        $m[] = $this->setMethodMessage($text, $this->message->chat->id);
         $this->pushMethod($m);
     }
 

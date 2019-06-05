@@ -35,6 +35,9 @@ class RequestData
 
     private $methods;
 
+    CONST CHAT_PRIVATE = 'private';
+    CONST CHAT_GROUP = 'group';
+
     /**
      * @return mixed
      */

@@ -21,23 +21,14 @@ class ChatCheckMiddleware extends AbstractMiddleware
     {
         $type = $this->getChatType();
 
-        if ($type === 'private') {
-            $this->insertNext(new UserExistMiddleware());
-        } elseif ($type === 'group') {
-            $this->insertNext(new GroupExistMiddleware());
+        if ($type === self::$requestData::CHAT_PRIVATE) {
+            $middleware = new UserExistMiddleware();
+        } elseif ($type === self::$requestData::CHAT_GROUP) {
+            $middleware = new GroupExistMiddleware();
         }
+
+        $this->insertNext($middleware);
 
         $this->consoleLog('type: ' . $type);
-    }
-
-    /**
-     * @return bool|string
-     */
-    protected function getChatType()
-    {
-        if (!isset(self::$requestData->getMessage()->chat)) {
-            return false;
-        }
-        return self::$requestData->getMessage()->chat->type;
     }
 }

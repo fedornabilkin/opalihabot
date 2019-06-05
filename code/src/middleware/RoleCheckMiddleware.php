@@ -4,16 +4,16 @@
 namespace Fp\Telebot\middleware;
 
 
+use Fp\Telebot\models\AbstractModel;
+use Fp\Telebot\models\RoleGroupModel;
 use Fp\Telebot\models\RoleUserModel;
 
 class RoleCheckMiddleware extends AbstractMiddleware
 {
+    /** @var AbstractModel */
     private $model;
-
-    public function __construct()
-    {
-        $this->model = new RoleUserModel();
-    }
+    private $id; // id юзера или группы
+    private $fieldName = 'userid'; // название поля в таблице roleuser или rolegroup
 
     /**
      * @inheritDoc
@@ -25,8 +25,9 @@ class RoleCheckMiddleware extends AbstractMiddleware
         return parent::check();
     }
 
-    protected function checkRole()
+    protected function checkRole(): void
     {
+        $this->prepareModel();
         $roleId = $this->getRole();
 
         if (!$roleId) {
@@ -41,7 +42,21 @@ class RoleCheckMiddleware extends AbstractMiddleware
      */
     protected function getRole()
     {
-        $userId = self::$requestData->getUserId();
-        return $this->model->get('roleid', ['userid' => $userId]);
+        return $this->model->get('roleid', [$this->fieldName => $this->id]);
+    }
+
+    /**
+     * Определяет в какой таблице искать роль
+     */
+    protected function prepareModel(): void
+    {
+        if ($this->getChatType() === self::$requestData::CHAT_GROUP) {
+            $this->id = self::$requestData->getGroupId();
+            $this->fieldName = 'groupid';
+            $this->model = new RoleGroupModel();
+        } else {
+            $this->id = self::$requestData->getUserId();
+            $this->model = new RoleUserModel();
+        }
     }
 }

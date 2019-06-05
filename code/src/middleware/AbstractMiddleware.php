@@ -116,6 +116,17 @@ abstract class AbstractMiddleware
     }
 
     /**
+     * @return bool|string
+     */
+    protected function getChatType()
+    {
+        if (!isset(self::$requestData->getMessage()->chat)) {
+            return false;
+        }
+        return self::$requestData->getMessage()->chat->type;
+    }
+
+    /**
      * @param string|array|object $text
      */
     protected function consoleLog($text)
