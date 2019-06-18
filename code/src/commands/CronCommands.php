@@ -45,7 +45,8 @@ class CronCommands extends AbstractCommands
 
             'user' => [$this->getHandler(), 'sendUser'],
             'group' => [$this->getHandler(), 'sendGroup'],
-            'detailed' => [$this->getHandler(), 'sendDetailed'],
+            'ipu' => [$this->getHandler(), 'sendIpu'],
+            'notify' => [$this->getHandler(), 'sendNotifyAll'],
         ];
     }
 }

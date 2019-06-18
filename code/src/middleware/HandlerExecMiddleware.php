@@ -35,6 +35,7 @@ class HandlerExecMiddleware extends AbstractMiddleware
             $data->setMethods($commands->getHandler()->getMethods());
         } else {
             $this->consoleLog(D::MSG_ERROR . ' call_user_func ' . __METHOD__);
+            $this->consoleLog([$data->getCommandType(), $data->getCommandValue()]);
             $this->stopProcessing();
         }
     }

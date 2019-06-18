@@ -27,7 +27,9 @@ class ChatCheckMiddleware extends AbstractMiddleware
             $middleware = new GroupExistMiddleware();
         }
 
-        $this->insertNext($middleware);
+        if (isset($middleware)) {
+            $this->insertNext($middleware);
+        }
 
         $this->consoleLog('type: ' . $type);
     }

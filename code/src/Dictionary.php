@@ -22,20 +22,39 @@ class Dictionary
     // slash command
     CONST CMD_START = '/start';
     CONST CMD_HELP = '/help';
+    CONST CMD_ADD = '/add';
+
+    // text commands
+    CONST T_UK = 'УК';
+    CONST T_TAXI = 'Taxi';
+    CONST T_APTEKA = 'Аптеки';
+    CONST T_NOTES = 'Записи';
 
     // callback params names
     CONST CALLBACK_PM_ACTION = 'action';
     // callback command
     CONST CALLBACK_USERS_PANEL = 'usersPanel';
     CONST CALLBACK_ROLES_PANEL = 'rolesPanel';
+    CONST CALLBACK_NOTES_PANEL = 'notesPanel';
+    CONST CALLBACK_TIME_PANEL = 'timePanel';
+
+    CONST CALLBACK_NOTES_TOGGLE = 'toggleNote';
+    CONST CALLBACK_NOTES_REMOVE = 'removeNote';
+
+    CONST CALLBACK_NOTIFY_ADD_DAY = 'addDayNotify';
+    CONST CALLBACK_NOTIFY_ADD_TIME = 'addTimeNotify';
 
     // panel names
     CONST PANEL_USER_LIST = 'Пользователи';
     CONST PANEL_CHANGE_ROLE = 'Назначение роли пользователю';
+    CONST PANEL_NOTES_LIST = 'Записи';
 
     // speed buttons
     CONST BTN_ADMIN_PANEL = 'Панель администратора';
+    CONST BTN_MODERATOR_PANEL = 'Панель модератора';
+    CONST BTN_USER_PANEL = 'Панель пользователя';
     CONST BTN_USER_LIST = 'Пользователи';
+    CONST BTN_LAST_CMD_LIST = 'Последние команды';
 
     // inline buttons
     CONST BTN_INLINE_ROLE_ADMIN = 'Админ';

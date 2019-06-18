@@ -11,10 +11,11 @@ use Fp\Telebot\handlers\AdminHandler;
  * Class AdminCommands
  * @package Fp\Telebot\commands
  */
-class AdminCommands extends AbstractCommands
+class AdminCommands extends ModeratorCommands
 {
     public function __construct()
     {
+        parent::__construct();
         $this->setHandler(new AdminHandler());
     }
 
@@ -23,10 +24,12 @@ class AdminCommands extends AbstractCommands
      */
     public function getCommandsCallback()
     {
-        return [
+        $arr = parent::getCommandsCallback();
+
+        return array_merge($arr, [
             D::CALLBACK_USERS_PANEL => [$this->getHandler(), 'initAssignRolePanel'],
-            D::CALLBACK_ROLES_PANEL => [$this->getHandler(), 'processAssignRole']
-        ];
+            D::CALLBACK_ROLES_PANEL => [$this->getHandler(), 'processAssignRole'],
+        ]);
     }
 
     /**
@@ -34,9 +37,11 @@ class AdminCommands extends AbstractCommands
      */
     public function getCommandsCmd()
     {
-        return [
-            D::CMD_START => [$this->getHandler(), 'initAdminButtons']
-        ];
+        $arr = parent::getCommandsCmd();
+
+        return array_merge($arr, [
+
+        ]);
     }
 
     /**
@@ -44,10 +49,12 @@ class AdminCommands extends AbstractCommands
      */
     public function getCommandsText()
     {
-        return [
-            D::BTN_ADMIN_PANEL => [$this->getHandler(), 'initAdminButtons'],
-            D::BTN_USER_LIST => [$this->getHandler(), 'initUserListPanel'],
-        ];
+        $arr = parent::getCommandsText();
+
+        return array_merge($arr, [
+            D::BTN_LAST_CMD_LIST => [$this->getHandler(), 'lastCmdList'],
+            'test' => [$this->getHandler(), 'test'],
+        ]);
     }
 
 }

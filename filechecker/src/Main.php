@@ -66,6 +66,26 @@ class Main
         file_get_contents($uri);
     }
 
+    public function action($action)
+    {
+        $method = $action . 'Check';
+        if (!method_exists($this, $method)) {
+            $this->sendRequest("action/$action");
+        }
+
+        switch ($action){
+            case 'admin':
+                $this->adminCheck();
+                break;
+            case 'user':
+                $this->userCheck();
+                break;
+            case 'ipu':
+                $this->ipuCheck();
+                break;
+        }
+    }
+
     public function adminCheck()
     {
         if (date("Ymd") - date("Ymd", filemtime($this->file)) == 0) {
@@ -77,18 +97,18 @@ class Main
 
     public function userCheck()
     {
-        if (date("Ymd") - date("Ymd", filemtime($this->file)) == 0) {
+//        if (date("Ymd") - date("Ymd", filemtime($this->file)) == 0) {
             $this->sendRequest("action/user");
-            $this->sendRequest("action/group");
-        } else {
-            $this->sendRequest("action/monitoring");
-            
-            $this->initMainLoop();
-        }
+//            $this->sendRequest("action/group");
+//        } else {
+//            $this->sendRequest("action/monitoring");
+//
+//            $this->initMainLoop();
+//        }
     }
 
-    public function detailedCheck()
+    public function ipuCheck()
     {
-        $this->sendRequest("action/detailed");
+        $this->sendRequest("action/ipu");
     }
 }

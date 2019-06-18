@@ -27,6 +27,11 @@ class RoleCheckMiddleware extends AbstractMiddleware
 
     protected function checkRole(): void
     {
+        if (self::$requestData->getIsCron()){
+            $this->consoleLog('isCron');
+            return;
+        }
+
         $this->prepareModel();
         $roleId = $this->getRole();
 

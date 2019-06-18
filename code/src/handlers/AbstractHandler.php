@@ -4,7 +4,9 @@
 namespace Fp\Telebot\handlers;
 
 
+use Fp\Telebot\buttons\AbstractButtons;
 use Fp\Telebot\Dictionary as D;
+use Fp\Telebot\helpers\CalendarHelper;
 use Fp\Telebot\helpers\CallbackHelper;
 use Fp\Telebot\helpers\ConsoleHelper;
 use Fp\Telebot\RequestData;
@@ -36,7 +38,17 @@ abstract class AbstractHandler
     protected $isCommand = false;
     protected $isCron = false;
 
+    /** @var AbstractButtons */
+    protected $buttons;
+
     protected $methods = [];
+    /** @var CalendarHelper */
+    protected $calendar;
+
+    public function __construct()
+    {
+        $this->calendar = new CalendarHelper();
+    }
 
     /**
      * @param RequestData $data
@@ -55,6 +67,13 @@ abstract class AbstractHandler
         $this->arguments = $data->getArguments();
     }
 
+    protected function setInstanceButtons($buttons)
+    {
+        if(!$this->buttons){
+            $this->buttons = $buttons;
+        }
+    }
+
     /**
      * @param TelegramMethodDefinitions|array $method
      */
@@ -63,6 +82,7 @@ abstract class AbstractHandler
         if (!is_array($method)) {
             $method = [$method];
         }
+
         $this->methods = array_merge($this->methods, $method);
     }
 
@@ -166,7 +186,13 @@ abstract class AbstractHandler
      */
     public function getHelp()
     {
-        $text = "Сообщение с текстом помощи\n /help \n /info";
+        $text = "
+        *Помощь.*
+        /start - начало работы, инициализация панели управления
+        /help - помощь, также можно отправить \"?\"
+        /add текст - _добавить запись_
+        ";
+
         $m[] = $this->setMethodMessage($text, $this->message->chat->id);
         $this->pushMethod($m);
     }
@@ -214,9 +240,36 @@ abstract class AbstractHandler
      * Возвращает массив методов для отправки в чаты
      * @return array
      */
-    public function getMethods()
+    public function getMethods(): array
     {
+        $this->refreshSpeedButtons();
         return $this->methods;
+    }
+
+    /**
+     * Если в сообщении не определен reply_markup, то обновляем быстрые кнопки
+     */
+    protected function refreshSpeedButtons(): void
+    {
+        if(!isset($this->buttons)){
+            return;
+        }
+
+        foreach ($this->methods as $key => $method){
+            if(!$this->methods[$key]->reply_markup && $this->isMessageThisChat($method)){
+                $this->methods[$key]->reply_markup = $this->buttons->getCompleteMarkup();
+                break;
+            }
+        }
+    }
+
+    /**
+     * @param $method
+     * @return bool
+     */
+    protected function isMessageThisChat($method): bool
+    {
+        return !$method->chat_id || $method->chat_id === $this->message->chat->id;
     }
 
     /**

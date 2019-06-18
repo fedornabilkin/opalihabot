@@ -24,41 +24,46 @@ use unreal4u\TelegramAPI\Telegram\Types\ReplyKeyboardMarkup;
 abstract class AbstractButtons
 {
 
-    protected $sendMessage;
+//    protected $sendMessage;
     protected $markup;
+    protected $buttons = [];
 
     public function __construct()
     {
         $this->markup = new ReplyKeyboardMarkup();
-        $this->sendMessage = new SendMessage();
+//        $this->sendMessage = new SendMessage();
     }
 
     /**
      * В этом методе выполняем все необходимые действия, чтобы сформировать кнопки
      * Метод будет вызван при запросе объекта сообщения
      *
-     * @see getSendMessage
+     * @see getCompleteMarkup
      * @return void
      */
-    abstract public function create();
+    abstract public function create(): void ;
 
     /**
-     * @return SendMessage
+     * @return ReplyKeyboardMarkup
      */
-    public function getSendMessage()
+    public function getCompleteMarkup()
     {
-        $this->create();
-        $this->sendMessage->reply_markup = $this->getMarkup();
-
-        return $this->sendMessage;
+        return $this->getMarkup();
+//        $this->sendMessage->reply_markup = $this->getMarkup();
+////        $this->sendMessage->text = '*';
+////
+////        return $this->sendMessage;
     }
 
     /**
      * @return ReplyKeyboardMarkup
-     * @see getSendMessage
+     * @see getCompleteMarkup
      */
     protected function getMarkup()
     {
+        $this->create();
+        $this->addButtons($this->buttons);
+
         $this->markup->resize_keyboard = true;
         return $this->markup;
     }
@@ -69,7 +74,7 @@ abstract class AbstractButtons
     protected function addButtons(array $buttons)
     {
         foreach ($buttons as $key => $name) {
-            $stage = ($key >= 2) ? 2 : 1;
+            $stage = ($key >= 5) ? 2 : 1;
             $this->addButton($name, $stage);
         }
     }

@@ -7,13 +7,6 @@ use Fp\Filechecker\Main;
 
 if (isset($argv[1])) {
 
-    $main = new Main();
+    (new Main())->action($argv[1]);
 
-//    if ($argv[1] == "admin") {
-//        $main->adminCheck();
-//    } elseif ($argv[1] == "user") {
-//        $main->userCheck();
-//    } elseif ($argv[1] == 'detailed') {
-//        $main->detailedCheck();
-//    }
 }

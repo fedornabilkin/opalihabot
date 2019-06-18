@@ -52,6 +52,10 @@ class UpdateDataMiddleware extends AbstractMiddleware
 
             if (self::$requestData->getIsCommand()) {
                 $commandType = D::REQ_TYPE_COMMAND;
+                $arr = explode(' ', $text);
+                if (isset($arr[0])) {
+                    $commandValue = $arr[0];
+                }
             }
         }
 

@@ -35,7 +35,7 @@ class UserModel extends AbstractModel
             ["[><]roleuser(ru)" => ["u.id" => "userid"],
                 "[><]role(r)" => ["ru.roleid" => "id"]],
             ['u.id', 'u.username', 'u.fullname', 'r.role', 'r.id(roleid)'],
-            ["ORDER" => ["u.id" => "DESC"]]);
+            ["ORDER" => ["u.id" => "ASC"]]);
 
         return $users;
     }
@@ -46,7 +46,7 @@ class UserModel extends AbstractModel
     public function getUsers()
     {
         $users = $this->db->select(
-            'user(u)', ['u.id', 'u.username', 'u.fullname']);
+            'user(u)', ['u.id', 'u.username', 'u.fullname', 'chatid']);
 
         return $users;
     }
@@ -72,7 +72,7 @@ class UserModel extends AbstractModel
     /**
      * @return array|bool
      */
-    public function getQvChatIds()
+    public function getModeratorsChatIds()
     {
         $users = $this->getUsersByRole(D::ROLE_MODERATOR);
         return array_column($users, 'chatid');

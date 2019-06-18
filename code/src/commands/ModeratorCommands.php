@@ -11,10 +11,11 @@ use Fp\Telebot\handlers\ModeratorHandler;
  * Class QvCommands
  * @package Fp\Telebot\commands
  */
-class ModeratorCommands extends AbstractCommands
+class ModeratorCommands extends GuestCommands
 {
     public function __construct()
     {
+        parent::__construct();
         $this->setHandler(new ModeratorHandler());
     }
 
@@ -23,7 +24,11 @@ class ModeratorCommands extends AbstractCommands
      */
     public function getCommandsCallback()
     {
-        return [];
+        $arr = parent::getCommandsCallback();
+
+        return array_merge($arr, [
+
+        ]);
     }
 
     /**
@@ -31,9 +36,11 @@ class ModeratorCommands extends AbstractCommands
      */
     public function getCommandsCmd()
     {
-        return [
-            D::CMD_START => [$this->getHandler(), 'initModeratorButtons']
-        ];
+        $arr = parent::getCommandsCmd();
+
+        return array_merge($arr, [
+
+        ]);
     }
 
     /**
@@ -41,8 +48,11 @@ class ModeratorCommands extends AbstractCommands
      */
     public function getCommandsText()
     {
-        return [
+        $arr = parent::getCommandsText();
+
+        return array_merge($arr, [
             'qwerty' => [$this->getHandler(), 'getRevenue'],
-        ];
+            D::BTN_USER_LIST => [$this->getHandler(), 'initUserListPanel'],
+        ]);
     }
 }

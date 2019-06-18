@@ -25,6 +25,8 @@ services:
     volumes:
       - ./code:/code
       - ./filechecker:/filechecker
+#      - /etc/timezone:/etc/timezone:ro
+#      - /etc/localtime:/etc/localtime:ro
      # - /var/update:/update
     #        depends_on: [db]
     tty: true

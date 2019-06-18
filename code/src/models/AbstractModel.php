@@ -36,6 +36,16 @@ abstract class AbstractModel
     }
 
     /**
+     * @param array $data
+     * @param integer|array $cond
+     */
+    public function update($data, $cond)
+    {
+        $where = $this->prepareWhere($cond);
+        $this->db->update($this->getTableName(), $data, $where);
+    }
+
+    /**
      * @param null $join
      * @param null $columns
      * @param null $where
@@ -51,7 +61,8 @@ abstract class AbstractModel
      */
     public function delete($cond)
     {
-        $this->db->delete($this->getTableName(), $cond);
+        $where = $this->prepareWhere($cond);
+        $this->db->delete($this->getTableName(), $where);
     }
 
     /**
@@ -60,11 +71,20 @@ abstract class AbstractModel
      */
     public function getRow($cond)
     {
+        $where = $this->prepareWhere($cond);
+        return $this->db->get($this->getTableName(), '*', $where);
+    }
+
+    /**
+     * @param int|array $cond
+     * @return array
+     */
+    protected function prepareWhere($cond)
+    {
         $where = $cond;
         if (!is_array($cond) && $cond > 0) {
             $where = ["id" => $cond];
         }
-
-        return $this->db->get($this->getTableName(), '*', $where);
+        return $where;
     }
 }

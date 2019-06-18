@@ -4,8 +4,10 @@
 namespace Fp\Telebot\handlers;
 
 
+use DateTime;
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\models\GroupModel;
+use Fp\Telebot\models\NotifyModel;
 use Fp\Telebot\models\UserModel;
 use function array_merge;
 
@@ -19,41 +21,33 @@ class CronHandler extends AbstractHandler
     public function __construct()
     {
         $this->consoleLog(self::class);
+        parent::__construct();
     }
 
     public function sendFileFiled()
     {
-        $this->sendAdmin(0);
+        $text = 'Файл не обновился';
+        $this->sendAdmin($text);
     }
 
     public function sendFileUpdate()
     {
-        $this->sendAdmin(1);
+        $text = 'Файл обновился';
+        $this->sendAdmin($text);
     }
 
     public function sendMonitoring()
     {
-        $this->sendAdmin(2);
+        $text = "Файл не обновился, рассылка пользователям не произведена.\nЗапущен процесс мониторинга.";
+        $this->sendAdmin($text);
     }
 
     /**
      * @param int $data
      */
-    public function sendAdmin($data)
+    public function sendAdmin($text)
     {
-        switch ($data) {
-            case 0:
-                $text = 'Файл не обновился';
-                break;
-            case 1:
-                $text = 'Файл обновился';
-                break;
-            case 2:
-                $text = "Файл не обновился, рассылка пользователям не произведена.\nЗапущен процесс мониторинга.";
-                break;
-            default:
-                $text = 'Статус обновления файла ошибочный';
-        }
+        $text = $text ?? 'Статус обновления файла ошибочный';
 
         $chatIds = (new UserModel())->getAdminsChatIds();
 
@@ -63,13 +57,10 @@ class CronHandler extends AbstractHandler
 
     public function sendGroup()
     {
-        $chatIds = (new GroupModel())->getQvChatIds();
+        $chatIds = (new GroupModel())->getModeratorChatIds();
 
         $messages = [
-            $this->getPastFactContent(D::BTN_PAST_FACT),
-            $this->getPastFactContent(D::BTN_PAST_FACT_RB),
-            $this->getPastFactContent(D::BTN_PAST_FACT_LV),
-            $this->getPastFactContent(D::BTN_PAST_FACT_RB_PFM),
+            'Сообщение в группу',
         ];
 
         $this->setMultipleMessagesMultipleChats($messages, $chatIds);
@@ -80,28 +71,39 @@ class CronHandler extends AbstractHandler
         $chatIds = (new UserModel())->getAdminsChatIds();
 
         $messages = [
-            $this->getPastFactContent(D::BTN_PAST_FACT),
-            $this->getPastFactContent(D::BTN_PAST_FACT_RB),
-            $this->getPastFactContent(D::BTN_PAST_FACT_LV),
-            $this->getPastFactContent(D::BTN_PAST_FACT_RB_PFM),
+            'Сообщение пользователям: ' . date('H:i:s'),
         ];
 
         $this->setMultipleMessagesMultipleChats($messages, $chatIds);
     }
 
-    public function sendDetailed()
+    public function sendIpu()
     {
-        $chatIds = (new UserModel())->getAdminsChatIds();
-        $additionalChats = [];
-        if (defined('USER_CHAT_IDS') && is_array(USER_CHAT_IDS)) {
-            $additionalChats = USER_CHAT_IDS;
+        $users = (new UserModel())->getUsers();
+        $chatIds = array_column($users, 'chatid');
+
+        $text = "Показания ИПУ принимаются с 14 по 24 число каждого месяца";
+
+        $m = $this->setMethodMultipleChats($text, $chatIds);
+        $this->pushMethod($m);
+    }
+
+    public function sendNotifyAll()
+    {
+        $time = new DateTime();
+        $m = [];
+
+        $timeCode = $time->format('H') . $time->format('i');
+        $dayCode = $time->format('w');
+
+        $rows = (new NotifyModel())->getNotify($timeCode, $dayCode);
+
+        foreach ($rows as $row){
+            $m[$row['id']] = $this->setMethodMessage($row['text'], $row['chatid']);
         }
-        $chatIds = array_merge($chatIds, $additionalChats);
 
-        $messages = [
-            $this->getPastFactContent(D::BTN_PAST_FACT_RB_PFM),
-        ];
-
-        $this->setMultipleMessagesMultipleChats($messages, $chatIds);
+        if ($m) {
+            $this->pushMethod($m);
+        }
     }
 }

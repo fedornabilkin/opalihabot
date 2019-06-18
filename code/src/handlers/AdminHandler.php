@@ -5,26 +5,27 @@ namespace Fp\Telebot\handlers;
 
 
 use Fp\Telebot\buttons\AdminButtons;
-use Fp\Telebot\buttons\SaleButtons;
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\models\RoleModel;
 use Fp\Telebot\models\RoleUserModel;
 use Fp\Telebot\models\UserModel;
+use Fp\Telebot\models\UserStoryModel;
 use Fp\Telebot\panels\AssignRolePanel;
-use Fp\Telebot\panels\UserListPanel;
+use Fp\Telebot\panels\TimePanel;
 
 /**
  * Class AdminHandler
  * @package Fp\Telebot\handlers
- *
- *
  */
-class AdminHandler extends AbstractHandler
+class AdminHandler extends ModeratorHandler
 {
 
     public function __construct()
     {
         $this->consoleLog(self::class);
+        $this->setInstanceButtons(new AdminButtons());
+
+        parent::__construct();
     }
 
     /**
@@ -41,28 +42,6 @@ class AdminHandler extends AbstractHandler
         $panel->params = $this->callbackQueryData;
 
         $this->pushMethod($panel->getSendMessage());
-    }
-
-    /**
-     * Формирует панель в виде списка пользователей
-     */
-    public function initUserListPanel()
-    {
-        $users = (new UserModel())->getUsersWithRole();
-
-        $panel = new UserListPanel();
-        $panel->setUsers($users);
-
-        $this->pushMethod($panel->getSendMessage());
-    }
-
-    /**
-     * Формирует быстрые кнопки для админа
-     */
-    public function initAdminButtons()
-    {
-        $buttons = new AdminButtons();
-        $this->pushMethod($buttons->getSendMessage());
     }
 
     /**
@@ -83,6 +62,47 @@ class AdminHandler extends AbstractHandler
             $this->pushMethod($m);
         }
 
+    }
+
+    public function lastCmdList()
+    {
+        $model = new UserStoryModel();
+        $list = $model->lastCommand();
+        $text = '';
+
+        foreach ($list as $cmd){
+            $text .= "{$cmd['text']} \n";
+        }
+
+        $m[] = $this->setMethodMessage($text, $this->message->chat->id);
+        $this->pushMethod($m);
+    }
+
+    public function test()
+    {
+
+        $msg[] = $this->setMethodMessage('pre text', $this->message->chat->id);
+        $this->pushMethod($msg);
+
+        $panel = new TimePanel();
+
+        $this->pushMethod($panel->getSendMessage());
+
+//        $rows = '';
+//        for ($h=0; $h<=24; $h++){
+//            $col = '';
+//            for($m=1; $m<=6; $m++){
+//                if ($h===0) {
+//                    $col .= "$m|";
+//                }else{
+//                    $col .= "$h$m|";
+//                }
+//            }
+//            $rows .= $h .'| '. $col . "\n";
+//        }
+//
+//        $msg[] = $this->setMethodMessage($rows, $this->message->chat->id);
+//        $this->pushMethod($msg);
     }
 
     /**

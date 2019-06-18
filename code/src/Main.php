@@ -96,13 +96,11 @@ class Main
     {
 
         $server = new Server(function (ServerRequestInterface $request) {
-            $path = $request->getUri()->getPath();
+            $params = $this->getRequestParams($request);
 
-            $args = explode("/", $path);
-
-            if (isset($args[1]) && $args[1] == 'action' && isset($args[2])) {
+            if ($params) {
                 $updateHandler = new UpdateHandler($this->tgLog, $this->loop);
-                $updateHandler->setArguments($args);
+                $updateHandler->setArguments($params);
                 $updateHandler->handle();
             }
 
@@ -114,6 +112,18 @@ class Main
         $server->listen($socket);
 
         ConsoleHelper::consoleLog('Listening on ' . str_replace('tcp:', 'http:', $socket->getAddress()));
+    }
+
+    public function getRequestParams($request)
+    {
+        $params = [];
+        $path = $request->getUri()->getPath();
+        $args = explode("/", $path);
+        if (isset($args[1]) && $args[1] == 'action' && isset($args[2])) {
+            $params = $args;
+        }
+
+        return $params;
     }
 
     /**

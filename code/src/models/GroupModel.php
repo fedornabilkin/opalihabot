@@ -32,7 +32,7 @@ class GroupModel extends AbstractModel
     /**
      * @return array|bool
      */
-    public function getQvChatIds()
+    public function getModeratorChatIds()
     {
         $users = $this->getUsersByRole(D::ROLE_MODERATOR);
         return array_column($users, 'chatid');

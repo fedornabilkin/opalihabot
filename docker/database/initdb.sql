@@ -13,6 +13,7 @@ create table "user"
 alter table "user"
   owner to root;
 
+-- group
 create table "group"
 (
   id     integer default nextval('user_id_seq' :: regclass) not null
@@ -25,6 +26,7 @@ create table "group"
 alter table "group"
   owner to root;
 
+-- role
 create table role
 (
   id   serial not null
@@ -38,6 +40,7 @@ INSERT  INTO role (id, role) VALUES (3, 'Admin'), (2, 'Moderator'), (1, 'User');
 alter table role
   owner to root;
 
+-- roleauth
 create table roleauth
 (
   id     serial not null
@@ -53,6 +56,7 @@ create table roleauth
 alter table roleauth
   owner to root;
 
+-- roleuser
 create table roleuser
 (
   id     serial not null
@@ -71,6 +75,7 @@ create table roleuser
 alter table roleuser
   owner to root;
 
+-- rolegroup
 create table rolegroup
 (
   id      integer default nextval('roleuser_id_seq' :: regclass) not null
@@ -83,16 +88,56 @@ create table rolegroup
 alter table rolegroup
   owner to root;
 
-create table userstory
+-- userstory
+create table if not exists userstory
 (
-  id       serial not null
-    constraint userstory_pk
-    primary key,
-  userid   integer,
-  text     text,
-  datetime timestamp default now()
+	id serial not null
+		constraint userstory_pk
+			primary key,
+	userid integer
+		constraint userstory_userid_user_id_fk
+			references "user"
+				on update cascade on delete cascade,
+	text text,
+	datetime timestamp default now()
 );
 
 alter table userstory
   owner to root;
 
+-- notes
+create table if not exists notes
+(
+	id serial not null
+		constraint notes_pk
+			primary key,
+	text text,
+	userid integer
+		constraint notes_userid_user_id_fk
+			references "user"
+				on update cascade on delete cascade,
+	status integer default 1
+);
+
+alter table notes owner to root;
+
+create index if not exists notes_status__idx
+	on notes (status);
+
+-- notify
+create table if not exists notify
+(
+	id serial not null
+		constraint notify_pk
+			primary key,
+	notesid integer
+		constraint notify_notesid_notes_id_fk
+			references notes
+				on update cascade on delete cascade,
+	timecode integer,
+	daycode integer,
+	datecode integer
+);
+
+alter table notify
+  owner to root;

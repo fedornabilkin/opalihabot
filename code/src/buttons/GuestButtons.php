@@ -1,5 +1,10 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: fedornabilkin
+ * Date: 08.06.2019
+ * Time: 16:30
+ */
 
 namespace Fp\Telebot\buttons;
 
@@ -7,21 +12,19 @@ namespace Fp\Telebot\buttons;
 use Fp\Telebot\Dictionary as D;
 use unreal4u\TelegramAPI\Telegram\Types\ReplyKeyboardMarkup;
 
-/**
- * Class AdminButtons
- * @package Fp\Telebot\buttons
- */
-class AdminButtons extends ModeratorButtons
+class GuestButtons extends AbstractButtons
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
     public function create(): void
     {
-        parent::create();
-
         $buttons = [
-            D::BTN_LAST_CMD_LIST,
+            '?',
+            D::T_UK,
+            D::T_TAXI,
+            D::T_APTEKA,
+            D::T_NOTES,
         ];
 
         $this->buttons = array_merge($this->buttons, $buttons);
@@ -33,7 +36,7 @@ class AdminButtons extends ModeratorButtons
     public function getCompleteMarkup()
     {
         $m = parent::getCompleteMarkup();
-//        $m->text = D::BTN_ADMIN_PANEL;
+//        $m->text = D::BTN_USER_PANEL;
         return $m;
     }
 }

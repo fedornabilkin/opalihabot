@@ -1,16 +1,16 @@
 <?php
-
+/**
+ * Created by PhpStorm.
+ * User: fedornabilkin
+ * Date: 09.06.2019
+ * Time: 13:16
+ */
 
 namespace Fp\Telebot\panels;
 
-
 use Fp\Telebot\Dictionary as D;
 
-/**
- * Class UserListPanel
- * @package Fp\Telebot\panels
- */
-class UserListPanel extends AbstractPanel
+class NotesListPanel extends AbstractPanel
 {
     protected $rows;
 
@@ -28,23 +28,18 @@ class UserListPanel extends AbstractPanel
     public function getSendMessage()
     {
         $m = parent::getSendMessage();
-        $m->text = D::PANEL_USER_LIST;
+        $m->text = D::PANEL_NOTES_LIST;
         return $m;
     }
 
     public function create()
     {
-
-        $tmp = "%s. %s - %s %s";
-
         foreach ($this->rows as $key => $row) {
-            $userName = $row["username"] ? '@' . $row["username"] : 'None';
 
-            $text = sprintf($tmp, $row["id"], $row["fullname"], $userName, $row["role"]);
+            $text = $row['text'];
 
-            $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_USERS_PANEL;
-            $callback['userId'] = $row["id"];
-            $callback['roleId'] = $row["roleid"];
+            $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTES_PANEL;
+            $callback['rowId'] = $row["id"];
 
             $this->addInlineButton($text, $key, $this->callbackPrepare($callback));
         }
