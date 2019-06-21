@@ -4,6 +4,10 @@ RUN apk update && apk add postgresql postgresql-dev
 
 RUN docker-php-ext-install pdo_pgsql
 
+ENV TZ=Europe/Moscow
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+RUN echo "date.timezone=$TZ" > /usr/local/etc/php/conf.d/timezone.ini
+
 WORKDIR /code
 
 #ENTRYPOINT composer install --no-interaction && /bin/bash

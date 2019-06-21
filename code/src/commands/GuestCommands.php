@@ -28,6 +28,7 @@ class GuestCommands extends AbstractCommands
             D::CALLBACK_TIME_PANEL => [$this->getHandler(), 'initNotifyTimePanel'],
             D::CALLBACK_NOTES_TOGGLE => [$this->getHandler(), 'toggleNote'],
             D::CALLBACK_NOTES_REMOVE => [$this->getHandler(), 'removeNote'],
+            D::CALLBACK_NOTIFY_CLEAR => [$this->getHandler(), 'notifyClear'],
             D::CALLBACK_NOTIFY_ADD_DAY => [$this->getHandler(), 'addDayNotify'],
             D::CALLBACK_NOTIFY_ADD_TIME => [$this->getHandler(), 'addTimeNotify'],
         ];

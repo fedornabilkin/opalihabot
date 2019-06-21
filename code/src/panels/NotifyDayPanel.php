@@ -34,15 +34,11 @@ class NotifyDayPanel extends AbstractPanel
 
     public function create()
     {
-        $callback['rowId'] = $this->params['row']['id'];
+        $callback['rowId'] = $this->params['rowId'];
 
         $model = new NotesModel();
         $row = $model->getRow($callback['rowId']);
         $this->notesText = $row['text'];
-
-        $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_TIME_PANEL;
-        $callback['dayHook'] = 'all';
-        $this->addInlineButton('Каждый день', 1, $this->callbackPrepare($callback));
 
         $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTES_TOGGLE;
         $this->addInlineButton($row['status'] ? 'Выкл' : 'Вкл', 1, $this->callbackPrepare($callback));
@@ -50,18 +46,32 @@ class NotifyDayPanel extends AbstractPanel
         $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTES_REMOVE;
         $this->addInlineButton('Удалить', 1, $this->callbackPrepare($callback));
 
-        $days = $this->calendar::getDayMap();
+        $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTIFY_CLEAR;
+        $this->addInlineButton('Clear notify', 1, $this->callbackPrepare($callback));
+
         $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_TIME_PANEL;
 
+        $severalDays = [
+            'all' => 'Все дни',
+            'one' => 'Будни',
+            'two' => 'Выходные',
+        ];
+
+        foreach ($severalDays as $key => $val) {
+            $callback['dayHook'] = $key;
+            $this->addInlineButton($val, 2, $this->callbackPrepare($callback));
+        }
+
+        $days = $this->calendar::getDayMap();
         foreach ($days as $key => $day) {
             $callback['dayHook'] = $key;
-            $this->addInlineButton($day, 2, $this->callbackPrepare($callback));
+            $this->addInlineButton($day, 3, $this->callbackPrepare($callback));
         }
     }
 
-    public function getTimeText()
+    protected function getTimeText()
     {
-        $id = $this->params['row']['id'];
+        $id = $this->params['rowId'];
         $rows = (new NotifyModel())->getNotifyByNotesId($id);
         $txt = $rows ? "_Время уведомления_\n" : '_Время уведомления не указано_';
         $days = [];
@@ -74,7 +84,7 @@ class NotifyDayPanel extends AbstractPanel
             $daysMap = $this->calendar::getDayMap();
             foreach ($daysMap as $key => $day) {
                 $time = $days[$key] ?? [];
-                $txt .= $daysMap[$key] . ': ' . implode(', ', $time) . "\n";
+                $txt .= '*' . $daysMap[$key] . ':* ' . implode(', ', $time) . "\n";
             }
         }
 

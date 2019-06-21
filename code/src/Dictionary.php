@@ -40,6 +40,7 @@ class Dictionary
 
     CONST CALLBACK_NOTES_TOGGLE = 'toggleNote';
     CONST CALLBACK_NOTES_REMOVE = 'removeNote';
+    CONST CALLBACK_NOTIFY_CLEAR = 'notifyClear';
 
     CONST CALLBACK_NOTIFY_ADD_DAY = 'addDayNotify';
     CONST CALLBACK_NOTIFY_ADD_TIME = 'addTimeNotify';
@@ -47,7 +48,7 @@ class Dictionary
     // panel names
     CONST PANEL_USER_LIST = 'Пользователи';
     CONST PANEL_CHANGE_ROLE = 'Назначение роли пользователю';
-    CONST PANEL_NOTES_LIST = 'Записи';
+    CONST PANEL_NOTES_LIST = 'Список ваших записей';
 
     // speed buttons
     CONST BTN_ADMIN_PANEL = 'Панель администратора';

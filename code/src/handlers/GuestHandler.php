@@ -94,14 +94,26 @@ class GuestHandler extends AbstractHandler
     }
 
     /**
+     * Удаляет все настройки уведомлений
+     */
+    public function notifyClear()
+    {
+        $model = new NotifyModel();
+        $model->delete(['notesid' => $this->callbackQueryData['rowId']]);
+
+        $m[] = $this->setMethodMessage('Настройки уведомлений удалены', $this->message->chat->id);
+        $this->pushMethod($m);
+    }
+
+    /**
      * Отображает запись с кнопками выбора дней оповещения
      */
     public function initNotifyDayPanel()
     {
-        $row = (new NotesModel())->getRow($this->callbackQueryData['rowId']);
+//        $row = (new NotesModel())->getRow($this->callbackQueryData['rowId']);
 
-        $this->callbackQueryData["chatId"] = $this->message->chat->id;
-        $this->callbackQueryData['row'] = $row;
+//        $this->callbackQueryData["chatId"] = $this->message->chat->id;
+//        $this->callbackQueryData['row'] = $row;
 
         $panel = new NotifyDayPanel();
         $panel->params = $this->callbackQueryData;
@@ -144,9 +156,14 @@ class GuestHandler extends AbstractHandler
     {
         $model = new NotifyModel();
         $days = [$this->callbackQueryData['dayHook']];
+        $dayHook = $this->callbackQueryData['dayHook'];
 
-        if($this->callbackQueryData['dayHook'] === 'all'){
-            $days =  array_keys($this->calendar::getDayMap());
+        if($dayHook === 'all'){
+            $days = array_keys($this->calendar::getDayMap());
+        }elseif ($dayHook === 'one'){
+            $days = array_keys($this->calendar::getWorkDays());
+        }elseif ($dayHook === 'two'){
+            $days = array_keys($this->calendar::getWeekendDays());
         }
 
         foreach ($days as $day) {

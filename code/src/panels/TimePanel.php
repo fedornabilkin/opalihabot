@@ -31,18 +31,18 @@ class TimePanel extends AbstractPanel
         $callback['rowId'] = $this->params['rowId'];
         $callback['dayHook'] = $this->params['dayHook'];
 
-        for ($h=0; $h<=24; $h++){
+        for ($h=0; $h<=23; $h++){
             $col = '';
             for($m=0; $m<4; $m++){
-                if ($h > 0) {
-                    $min = $m===0 ? '00' : $m*15;
-                    $hour = $h<10 ? "0$h" : $h;
 
-                    $timeText = $hour .':'. $min;
-                    $callback['timeHook'] = CalendarHelper::timeHookEncode($hour, $min);
-                    $this->addInlineButton($timeText, $hour, $this->callbackPrepare($callback));
-                    $col .= $timeText . '|';
-                }
+                $min = $m===0 ? '00' : $m*15;
+                $hour = $h<10 ? "0$h" : $h;
+
+                $timeText = $hour .':'. $min;
+                $callback['timeHook'] = CalendarHelper::timeHookEncode($hour, $min);
+                $this->addInlineButton($timeText, $hour, $this->callbackPrepare($callback));
+                $col .= $timeText . '|';
+
             }
         }
 
