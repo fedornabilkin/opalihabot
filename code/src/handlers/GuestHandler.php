@@ -39,7 +39,11 @@ class GuestHandler extends AbstractHandler
         if ($text) {
             $userId = (new UserModel())->getUserIdByChatId($chatId);
             $notesId = (new NotesModel())->insert(['text' => $text, 'userid' => $userId]);
+
             $text = "*Запись добавлена*\n" . $text;
+            $this->callbackQueryData['rowId'] = $notesId;
+
+            $this->initNotifyDayPanel();
         } else {
             $text = 'Необходимо указать текст записи';
         }
@@ -110,11 +114,6 @@ class GuestHandler extends AbstractHandler
      */
     public function initNotifyDayPanel()
     {
-//        $row = (new NotesModel())->getRow($this->callbackQueryData['rowId']);
-
-//        $this->callbackQueryData["chatId"] = $this->message->chat->id;
-//        $this->callbackQueryData['row'] = $row;
-
         $panel = new NotifyDayPanel();
         $panel->params = $this->callbackQueryData;
 

@@ -31,8 +31,8 @@ ENTRYPOINT composer install --no-interaction && /bin/bash
 Запуск проекта
 ---
 
-* В `/code` выполняем `php init`, чтобы создать `code/example/conf.php` 
-и `code/example/conf-local.php`
+* В `/code` выполняем `php init`, чтобы создать `code/config/conf.php` 
+и `code/config/conf-local.php`
 (можно не заходить в контейнер, в файле `conf-local.php` изменяем настройки)
 * В файле `docker/dockerfile-composer` комментируем/раскомментируем, чтобы было так
 ```

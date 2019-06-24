@@ -34,11 +34,11 @@ class NotesListPanel extends AbstractPanel
 
     public function create()
     {
+        $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTES_PANEL;
         foreach ($this->rows as $key => $row) {
 
             $text = $row['text'];
 
-            $callback[D::CALLBACK_PM_ACTION] = D::CALLBACK_NOTES_PANEL;
             $callback['rowId'] = $row["id"];
 
             $this->addInlineButton($text, $key, $this->callbackPrepare($callback));

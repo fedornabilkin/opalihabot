@@ -75,6 +75,11 @@ abstract class AbstractModel
         return $this->db->get($this->getTableName(), '*', $where);
     }
 
+    public function count($join = null, $column = null, $where = null)
+    {
+        return $this->db->count($this->getTableName(), $join, $column, $where);
+    }
+
     /**
      * @param int|array $cond
      * @return array

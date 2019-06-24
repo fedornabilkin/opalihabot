@@ -7,6 +7,7 @@ namespace Fp\Telebot\handlers;
 use DateTime;
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\models\GroupModel;
+use Fp\Telebot\models\NotesModel;
 use Fp\Telebot\models\NotifyModel;
 use Fp\Telebot\models\UserModel;
 use function array_merge;
@@ -68,13 +69,16 @@ class CronHandler extends AbstractHandler
 
     public function sendUser()
     {
-        $chatIds = (new UserModel())->getAdminsChatIds();
+        $userModel = new UserModel();
+        $chatIds = ($userModel)->getAdminsChatIds();
 
-        $messages = [
-            'Сообщение пользователям: ' . date('H:i:s'),
-        ];
+        // counters
+        $users = $userModel->count();
+        $notes = (new NotesModel())->count();
 
-        $this->setMultipleMessagesMultipleChats($messages, $chatIds);
+        $msg = "*Регулярное*\nUsers: " . $users . "\nNotes: " . $notes . "\n";
+
+        $this->setMultipleMessagesMultipleChats([$msg], $chatIds);
     }
 
     public function sendIpu()
