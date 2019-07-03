@@ -71,7 +71,8 @@ class AdminHandler extends ModeratorHandler
         $text = '';
 
         foreach ($list as $cmd){
-            $text .= "{$cmd['text']} \n";
+            $dt = date('d.m.y H:i:s', $cmd['datetime']);
+            $text .= "$dt - {$cmd['text']} \n";
         }
 
         $m[] = $this->setMethodMessage($text, $this->message->chat->id);

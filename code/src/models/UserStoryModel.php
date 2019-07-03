@@ -12,7 +12,7 @@ class UserStoryModel extends AbstractModel
     {
         $messages = $this->db->select(
             'userstory',
-            ['id', 'text'],
+            ['id', 'text', 'datetime'],
             [
                 "ORDER" => ["id" => "DESC"],
                 'LIMIT' => 15
