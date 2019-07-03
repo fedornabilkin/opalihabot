@@ -11,7 +11,7 @@ class UserStoryModel extends AbstractModel
     public function lastCommand()
     {
         $messages = $this->db->select(
-            'userstory',
+            $this->getTableName(),
             ['id', 'text', 'datetime'],
             [
                 "ORDER" => ["id" => "DESC"],
