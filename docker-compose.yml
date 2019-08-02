@@ -25,6 +25,7 @@ services:
     volumes:
       - ./code:/code
       - ./filechecker:/filechecker
+      - ./docker/php/supervisor/runFile.conf:/etc/supervisor/conf.d/runFile.conf
 #      - /etc/timezone:/etc/timezone:ro
 #      - /etc/localtime:/etc/localtime:ro
      # - /var/update:/update
@@ -58,8 +59,8 @@ services:
 
   php:
     build:
-      context: ./
-      dockerfile: docker/dockerfile-php-7-fpm
+      context: docker/php
+      dockerfile: Dockerfile
     network_mode: bridge
     depends_on: [app]
     volumes_from:
