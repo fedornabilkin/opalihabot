@@ -10,6 +10,6 @@ RUN echo "date.timezone=$TZ" > /usr/local/etc/php/conf.d/timezone.ini
 
 WORKDIR /code
 
-ENTRYPOINT composer install --no-interaction && /bin/bash
-#ENTRYPOINT php /code/run.php
-#CMD ["true"]
+#ENTRYPOINT composer install --no-interaction && /bin/bash
+ENTRYPOINT php /code/run.php
+CMD ["true"]
