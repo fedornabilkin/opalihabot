@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fp\Telebot\handlers;
-
 
 use Fp\Telebot\buttons\AbstractButtons;
 use Fp\Telebot\Dictionary as D;
@@ -45,8 +43,10 @@ abstract class AbstractHandler
     /** @var CalendarHelper */
     protected $calendar;
 
-    public function __construct()
+    public function __construct($buttons = false)
     {
+        $this->consoleLog(static::class);
+        $this->setInstanceButtons($buttons);
         $this->calendar = new CalendarHelper();
     }
 

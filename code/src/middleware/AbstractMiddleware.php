@@ -41,6 +41,7 @@ abstract class AbstractMiddleware
      */
     public function check(): bool
     {
+        $this->consoleLog(static::class);
         if (!$this->next) {
             return true;
         }

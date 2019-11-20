@@ -67,6 +67,7 @@ class Main
 
     private function initUpdateLoop()
     {
+        ConsoleHelper::consoleLog(PHP_EOL);
         ConsoleHelper::consoleLog('Start init', 'd.m.y H:i:s');
 
         $getUpdates = new GetUpdates();

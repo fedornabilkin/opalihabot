@@ -1,9 +1,7 @@
 <?php
 
-
 namespace Fp\Telebot\handlers;
 
-use Fp\Telebot\buttons\GuestButtons;
 use Fp\Telebot\Dictionary;
 use Fp\Telebot\models\NotesModel;
 use Fp\Telebot\models\NotifyModel;
@@ -18,15 +16,6 @@ use Fp\Telebot\panels\TimePanel;
  */
 class GuestHandler extends AbstractHandler
 {
-
-    public function __construct()
-    {
-        $this->consoleLog(self::class);
-        $this->setInstanceButtons(new GuestButtons());
-
-        parent::__construct();
-    }
-
     /**
      * Добавляет запись
      */
@@ -50,6 +39,17 @@ class GuestHandler extends AbstractHandler
 
         $m[] = $this->setMethodMessage($text, $chatId);
         $this->pushMethod($m);
+    }
+
+    /**
+     * Отображает запись с кнопками выбора дней оповещения
+     */
+    public function initNotifyDayPanel()
+    {
+        $panel = new NotifyDayPanel();
+        $panel->params = $this->callbackQueryData;
+
+        $this->pushMethod($panel->getSendMessage());
     }
 
     /**
@@ -78,7 +78,7 @@ class GuestHandler extends AbstractHandler
         $row = $model->getRow($this->callbackQueryData['rowId']);
         $status = !$row['status'];
 
-        $model->update(['status' => (int) $status], $row['id']);
+        $model->update(['status' => (int)$status], $row['id']);
         $text = !$status ? 'выключена' : 'включена';
 
         $m[] = $this->setMethodMessage($text, $this->message->chat->id);
@@ -107,17 +107,6 @@ class GuestHandler extends AbstractHandler
 
         $m[] = $this->setMethodMessage('Настройки уведомлений удалены', $this->message->chat->id);
         $this->pushMethod($m);
-    }
-
-    /**
-     * Отображает запись с кнопками выбора дней оповещения
-     */
-    public function initNotifyDayPanel()
-    {
-        $panel = new NotifyDayPanel();
-        $panel->params = $this->callbackQueryData;
-
-        $this->pushMethod($panel->getSendMessage());
     }
 
     /**
@@ -157,18 +146,18 @@ class GuestHandler extends AbstractHandler
         $days = [$this->callbackQueryData['dayHook']];
         $dayHook = $this->callbackQueryData['dayHook'];
 
-        if($dayHook === 'all'){
+        if ($dayHook === 'all') {
             $days = array_keys($this->calendar::getDayMap());
-        }elseif ($dayHook === 'one'){
+        } elseif ($dayHook === 'one') {
             $days = array_keys($this->calendar::getWorkDays());
-        }elseif ($dayHook === 'two'){
+        } elseif ($dayHook === 'two') {
             $days = array_keys($this->calendar::getWeekendDays());
         }
 
         foreach ($days as $day) {
             $data = [
                 'notesid' => $this->callbackQueryData['rowId'],
-                'timecode' => (int) $this->callbackQueryData['timeHook'],
+                'timecode' => (int)$this->callbackQueryData['timeHook'],
                 'daycode' => $day,
             ];
             $model->addNotify($data);

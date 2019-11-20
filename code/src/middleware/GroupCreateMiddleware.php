@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fp\Telebot\middleware;
-
 
 use Fp\Telebot\models\GroupModel;
 
@@ -20,7 +18,6 @@ class GroupCreateMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         if (!$this->createGroup() && !self::$requestData->getIsCron()) {
             return $this->stopProcessing();
         }

@@ -20,7 +20,6 @@ class RoleCheckMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->checkRole();
         return parent::check();
     }

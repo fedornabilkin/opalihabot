@@ -20,7 +20,6 @@ class UserExistMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->existUser();
         return parent::check();
     }

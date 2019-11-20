@@ -14,15 +14,6 @@ use Fp\Telebot\panels\UserListPanel;
  */
 class ModeratorHandler extends GuestHandler
 {
-
-    public function __construct()
-    {
-        $this->consoleLog(self::class);
-        $this->setInstanceButtons(new ModeratorButtons());
-
-        parent::__construct();
-    }
-
     /**
      * Формирует панель в виде списка пользователей
      */

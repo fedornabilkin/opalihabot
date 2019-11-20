@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Fp\Telebot\commands;
 
-
 use Fp\Telebot\Dictionary as D;
-use Fp\Telebot\handlers\ModeratorHandler;
 
 /**
  * Class QvCommands
@@ -13,12 +10,6 @@ use Fp\Telebot\handlers\ModeratorHandler;
  */
 class ModeratorCommands extends GuestCommands
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setHandler(new ModeratorHandler());
-    }
-
     /**
      * @inheritDoc
      */

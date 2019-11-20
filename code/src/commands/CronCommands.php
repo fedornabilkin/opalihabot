@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Fp\Telebot\commands;
 
-
-use Fp\Telebot\handlers\CronHandler;
 
 /**
  * Class CronCommands
@@ -12,11 +9,6 @@ use Fp\Telebot\handlers\CronHandler;
  */
 class CronCommands extends AbstractCommands
 {
-    public function __construct()
-    {
-        $this->setHandler(new CronHandler());
-    }
-
     /**
      * @inheritDoc
      */

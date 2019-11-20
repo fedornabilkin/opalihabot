@@ -20,7 +20,6 @@ class GroupExistMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->existGroup();
         return parent::check();
     }
