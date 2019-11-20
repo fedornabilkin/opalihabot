@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Fp\Telebot\commands;
 
-
 use Fp\Telebot\Dictionary as D;
-use Fp\Telebot\handlers\GuestHandler;
 
 /**
  * Class GuestCommands
@@ -13,11 +10,6 @@ use Fp\Telebot\handlers\GuestHandler;
  */
 class GuestCommands extends AbstractCommands
 {
-    public function __construct()
-    {
-        $this->setHandler(new GuestHandler());
-    }
-
     /**
      * @inheritDoc
      */

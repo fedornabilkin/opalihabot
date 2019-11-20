@@ -12,7 +12,6 @@ class ChatCheckMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->chatType();
         return parent::check();
     }

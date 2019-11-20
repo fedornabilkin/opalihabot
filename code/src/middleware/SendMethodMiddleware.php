@@ -1,15 +1,11 @@
 <?php
 
-
 namespace Fp\Telebot\middleware;
-
 
 use Fp\Telebot\Sender;
 
 class SendMethodMiddleware extends AbstractMiddleware
 {
-    private $tgLog;
-    private $loop;
     private $message;
 
     /**
@@ -17,7 +13,6 @@ class SendMethodMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->sendMethods();
         return parent::check();
     }
@@ -27,14 +22,11 @@ class SendMethodMiddleware extends AbstractMiddleware
      */
     private function sendMethods()
     {
-        $data = self::$requestData;
-        $this->tgLog = $data->getTgLog();
-        $this->loop = $data->getLoop();
-        $this->message = $data->getMessage();
+        $this->message = $this->getData()->getMessage();
 
-        $methods = $data->getMethods();
+        $methods = $this->getData()->getMethods();
 
-        if(!$methods || !is_array($methods)){
+        if (!$methods || !is_array($methods)) {
             $this->consoleLog('Not found objects ' . __METHOD__);
             return false;
         }
@@ -48,18 +40,15 @@ class SendMethodMiddleware extends AbstractMiddleware
 
     /**
      * @param $method
-     * @param bool $chatId
      */
-    private function send($method, $chatId = false)
+    private function send($method)
     {
-        if ($chatId) {
-            $method->chat_id = $chatId;
-        } elseif (!$method->chat_id) {
+        if (!$method->chat_id) {
             $method->chat_id = $this->message->chat->id;
         }
 
         $this->consoleLog('send: ' . $method->chat_id);
 
-        (new Sender($this->tgLog, $this->loop))->send($method);
+        (new Sender($this->getData()->getTgLog(), $this->getData()->getLoop()))->send($method);
     }
 }

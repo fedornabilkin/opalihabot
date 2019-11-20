@@ -20,8 +20,6 @@ class RequestCheckMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
-
         $this->updateData = self::$requestData->getUpdateData();
 
         $this->checkRequest();
@@ -58,17 +56,13 @@ class RequestCheckMiddleware extends AbstractMiddleware
      */
     protected function isCommand()
     {
-        $cmd = false;
-
         if (isset($this->updateData->message->text)) {
 
-            $rest = substr($this->updateData->message->text, 0, 1);
-            if ($rest === '/') {
-                $cmd = true;
+            if ('/' === substr($this->updateData->message->text, 0, 1)) {
+                return true;
             }
-
         }
 
-        return $cmd;
+        return false;
     }
 }

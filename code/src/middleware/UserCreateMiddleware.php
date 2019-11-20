@@ -21,7 +21,6 @@ class UserCreateMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         if (!$this->createUser() && !self::$requestData->getIsCron()) {
             $this->consoleLog('Creat user filed!');
             return $this->stopProcessing();

@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fp\Telebot\middleware;
-
 
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\helpers\CallbackHelper;
@@ -20,8 +18,6 @@ class UpdateDataMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
-
         $this->data = self::$requestData->getUpdateData();
 
         $this->update();

@@ -18,7 +18,6 @@ class HandlerExecMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->execHandle();
         return parent::check();
     }

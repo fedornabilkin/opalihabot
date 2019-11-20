@@ -24,7 +24,6 @@ class AuthKeyMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $roleId = $this->getRole();
 
         $middleware = new RoleAssignMiddleware();

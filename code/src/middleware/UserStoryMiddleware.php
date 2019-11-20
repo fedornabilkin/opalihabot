@@ -20,7 +20,6 @@ class UserStoryMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
         $this->saveStory();
         return parent::check();
     }

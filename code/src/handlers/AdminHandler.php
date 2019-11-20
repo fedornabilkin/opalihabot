@@ -1,10 +1,7 @@
 <?php
 
-
 namespace Fp\Telebot\handlers;
 
-
-use Fp\Telebot\buttons\AdminButtons;
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\models\RoleModel;
 use Fp\Telebot\models\RoleUserModel;
@@ -19,15 +16,6 @@ use Fp\Telebot\panels\TimePanel;
  */
 class AdminHandler extends ModeratorHandler
 {
-
-    public function __construct()
-    {
-        $this->consoleLog(self::class);
-        $this->setInstanceButtons(new AdminButtons());
-
-        parent::__construct();
-    }
-
     /**
      * Формирует панель для управления ролями пользователя
      */

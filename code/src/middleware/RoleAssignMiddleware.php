@@ -21,8 +21,6 @@ class RoleAssignMiddleware extends AbstractMiddleware
      */
     public function check(): bool
     {
-        $this->consoleLog(self::class);
-
         $this->prepareModel();
         if (!$this->assignRole()) {
             return $this->stopProcessing();

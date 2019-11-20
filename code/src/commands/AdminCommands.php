@@ -1,11 +1,8 @@
 <?php
 
-
 namespace Fp\Telebot\commands;
 
-
 use Fp\Telebot\Dictionary as D;
-use Fp\Telebot\handlers\AdminHandler;
 
 /**
  * Class AdminCommands
@@ -13,12 +10,6 @@ use Fp\Telebot\handlers\AdminHandler;
  */
 class AdminCommands extends ModeratorCommands
 {
-    public function __construct()
-    {
-        parent::__construct();
-        $this->setHandler(new AdminHandler());
-    }
-
     /**
      * @inheritDoc
      */

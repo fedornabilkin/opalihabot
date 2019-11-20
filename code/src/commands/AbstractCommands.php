@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fp\Telebot\commands;
-
 
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\handlers\AbstractHandler;
@@ -28,6 +26,11 @@ abstract class AbstractCommands
      * @var string $handlerMethod
      */
     private $handlerMethod;
+
+    public function __construct(AbstractHandler $handler)
+    {
+        $this->setHandler($handler);
+    }
 
     /**
      * @return AbstractHandler
