@@ -4,6 +4,7 @@ namespace Fp\Telebot;
 
 use Clue\React\Socks\Client;
 use Fp\Telebot\helpers\ConsoleHelper;
+use Fp\Telebot\helpers\Env;
 use Psr\Http\Message\ServerRequestInterface;
 use React\EventLoop\Factory;
 use React\Http\Response;
@@ -35,13 +36,13 @@ class Main
         }
 
         $params = [];
-        if ($this->useProxy()) {
+        if (Env::proxyUse()) {
             $params['tcp'] = $this->getProxyClient();
         }
 
         $this->httpHandler = new HttpClientRequestHandler($this->loop, $params);
 
-        $this->tgLog = new TgLog(BOT_TOKEN, $this->httpHandler);
+        $this->tgLog = new TgLog(Env::botToken(), $this->httpHandler);
 
         $this->connector = $connector;
         $this->lastId = 352050076;
@@ -115,24 +116,16 @@ class Main
         ConsoleHelper::consoleLog('Listening on ' . str_replace('tcp:', 'http:', $socket->getAddress()));
     }
 
-    public function getRequestParams($request)
+    public function getRequestParams(ServerRequestInterface $request)
     {
         $params = [];
         $path = $request->getUri()->getPath();
-        $args = explode("/", $path);
-        if (isset($args[1]) && $args[1] == 'action' && isset($args[2])) {
+        $args = explode('/', $path);
+        if (isset($args[1], $args[2]) && $args[1] === 'action') {
             $params = $args;
         }
 
         return $params;
-    }
-
-    /**
-     * @return bool
-     */
-    protected function useProxy()
-    {
-        return defined('PROXY_USE') && PROXY_USE;
     }
 
     /**
@@ -141,7 +134,7 @@ class Main
     protected function getProxyClient()
     {
         return new Client('socks5://'
-            . PROXY_USER . ':' . PROXY_PASS
-            . '@' . PROXY_ADDRESS . ':' . PROXY_PORT, new Connector($this->loop));
+            . Env::proxyUser() . ':' . Env::proxyPassword()
+            . '@' . Env::proxyAddress() . ':' . Env::proxyPort(), new Connector($this->loop));
     }
 }

@@ -5,6 +5,7 @@ namespace Fp\Telebot;
 
 use Fp\Telebot\Dictionary as D;
 use Fp\Telebot\helpers\ConsoleHelper;
+use Fp\Telebot\helpers\Env;
 use Fp\Telebot\models\UserModel;
 use React\EventLoop\Factory;
 use unreal4u\TelegramAPI\HttpClientRequestHandler;
@@ -43,7 +44,7 @@ class Sender
         $chatIds = (new UserModel())->getAdminsChatIds();
         foreach ($chatIds as $chatId) {
             $loop = Factory::create();
-            $tgLog = new TgLog(BOT_TOKEN, new HttpClientRequestHandler($loop));
+            $tgLog = new TgLog(Env::botToken(), new HttpClientRequestHandler($loop));
 
             $sendPhoto = new SendPhoto();
             $sendPhoto->chat_id = $chatId;
