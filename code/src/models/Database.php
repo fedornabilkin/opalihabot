@@ -2,6 +2,7 @@
 
 namespace Fp\Telebot\models;
 
+use Fp\Telebot\helpers\Env;
 use Medoo\Medoo;
 
 /**
@@ -21,14 +22,14 @@ class Database extends Medoo
     /** @return Medoo */
     public static function getInstance()
     {
-        if (self::$instance == null) {
+        if (self::$instance === null) {
             self::$instance = new self([
-                'database_type' => DB_CONNECT_DATA['database_type'],
-                'database_name' => DB_CONNECT_DATA['database_name'],
-                'server' => DB_CONNECT_DATA['server'],
-                'port' => DB_CONNECT_DATA['port'],
-                'username' => DB_CONNECT_DATA['username'],
-                'password' => DB_CONNECT_DATA['password']
+                'database_type' => 'pgsql',
+                'database_name' => Env::postgresName(),
+                'server' => Env::postgresHost(),
+                'port' => Env::postgresPort(),
+                'username' => Env::postgresUser(),
+                'password' => Env::postgresPassword()
             ]);
         }
 

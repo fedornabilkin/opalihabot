@@ -3,21 +3,30 @@
 
 * Создаем файл .env
 ```
-# DB
-pg_db_name=telebot
-pg_db_user=root
-pg_db_password=password
+B_BOT_TOKEN=
+B_HOST_IP=10.0.2.15
 
-# Hosts
-host_telegram_api=api.telegram.org:149.154.167.220
+# DEV or PROD
+B_ENVIRONMENT=DEV
+
+# DB
+B_POSTGRES_HOST=10.0.2.15
+B_POSTGRES_PORT=5442
+B_POSTGRES_NAME=dbname
+B_POSTGRES_USER=user
+B_POSTGRES_PASSWORD=pass
 
 # Ports host
-port_host_wkhtml=8089
-port_host_app=8092
+B_WKHTML_PORT=8089
+B_APP_PORT=8092
+B_WEB_PORT=8090
 
-# Ports service
-port_service_web=8090
-port_service_db=5442
+# Proxy
+B_PROXY_USE=false
+B_PROXY_ADDRESS=125.125.125.125
+B_PROXY_PORT=8000
+B_PROXY_USER=user
+B_PROXY_PASSWORD=pass
 ```
 
 * В файле `docker/dockerfile-composer` комментируем/раскомментируем, чтобы было так
@@ -27,13 +36,6 @@ ENTRYPOINT composer install --no-interaction && /bin/bash
 ```
 * Собираем образы `docker-compose build`
 * Запускаем контейнеры `docker-compose up -d`
-
-Запуск проекта
----
-
-* В `/code` выполняем `php init`, чтобы создать `code/config/conf.php` 
-и `code/config/conf-local.php`
-(можно не заходить в контейнер, в файле `conf-local.php` изменяем настройки)
 * В файле `docker/dockerfile-composer` комментируем/раскомментируем, чтобы было так
 ```
 #ENTRYPOINT composer install --no-interaction && /bin/bash

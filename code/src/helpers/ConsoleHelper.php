@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fp\Telebot\helpers;
-
 
 class ConsoleHelper
 {
@@ -12,7 +10,7 @@ class ConsoleHelper
      */
     public static function consoleLog($value, $dateTimeFormat = '')
     {
-        if (ENV !== 'DEV') {
+        if (Env::environment() !== 'DEV') {
             return;
         }
 
